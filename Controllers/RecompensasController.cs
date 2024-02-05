@@ -8,22 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using ConexionAppWeb_Apigateway.Models.DB;
 using Newtonsoft.Json;
 using System.Net.Http;
+using ConexionAppWeb_Apigateway.Utilities;
 
 namespace ConexionAppWeb_Apigateway.Controllers
 {
     public class RecompensasController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public RecompensasController(IHttpClientFactory httpClientFactory)
-        {
-            _httpClientFactory = httpClientFactory;
-        }
-
         // GET: Recompensas
         public async Task<IActionResult> Index()
         {
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync("http://localhost:5278/Recompensa/ListarRecompensas");
 
             if (response.IsSuccessStatusCode)
@@ -47,7 +41,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Recompensa/BuscarRecompensa?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -83,7 +77,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
             {
                 var queryString = $"?Título={Uri.EscapeDataString(Título)}&Detalle={Uri.EscapeDataString(Detalle)}";
 
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.PostAsync($"http://localhost:5278/Recompensa/RegistrarRecompensa{queryString}", null);
 
                 if (response.IsSuccessStatusCode)
@@ -109,7 +103,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Recompensa/BuscarRecompensa?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -146,7 +140,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 {
                     var queryString = $"?id={id}&Título={Uri.EscapeDataString(Título)}&Detalle={Uri.EscapeDataString(Detalle)}";
 
-                    var httpClient = _httpClientFactory.CreateClient();
+                    var httpClient = HttpClientSingleton.Instance;
                     var response = await httpClient.PutAsync($"http://localhost:5278/Recompensa/EditarRecompensa{queryString}", null);
 
                     if (response.IsSuccessStatusCode)
@@ -174,7 +168,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Recompensa/BuscarRecompensa?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -202,7 +196,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
         {
             try
             {
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.DeleteAsync($"http://localhost:5278/Recompensa/EliminarRecompensa?id={id}");
 
                 if (response.IsSuccessStatusCode)
@@ -222,7 +216,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
 
         private async Task<bool> RecompensaExistsAsync(int id)
         {
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Recompensa/BuscarRecompensa?id={id}");
 
             return response.IsSuccessStatusCode;

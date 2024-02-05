@@ -8,22 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using ConexionAppWeb_Apigateway.Models.DB;
 using Newtonsoft.Json;
 using System.Net.Http;
+using ConexionAppWeb_Apigateway.Utilities;
 
 namespace ConexionAppWeb_Apigateway.Controllers
 {
     public class VoluntariadoesController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public VoluntariadoesController(IHttpClientFactory httpClientFactory)
-        {
-            _httpClientFactory = httpClientFactory;
-        }
 
         // GET: Voluntariados
         public async Task<IActionResult> Index()
         {
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync("http://localhost:5278/Voluntariado/ListarVoluntariados");
 
             if (response.IsSuccessStatusCode)
@@ -47,7 +42,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Voluntariado/BuscarVoluntariado?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -81,7 +76,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
         {
             try
             {
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.PostAsJsonAsync("http://localhost:5278/Voluntariado/RegistrarVoluntariado", voluntariado);
 
                 if (response.IsSuccessStatusCode)
@@ -107,7 +102,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Voluntariado/BuscarVoluntariado?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -142,7 +137,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
             {
                 try
                 {
-                    var httpClient = _httpClientFactory.CreateClient();
+                    var httpClient = HttpClientSingleton.Instance;
                     var response = await httpClient.PutAsJsonAsync($"http://localhost:5278/Voluntariado/EditarVoluntariado?id={id}", voluntariado);
 
                     if (response.IsSuccessStatusCode)
@@ -170,7 +165,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Voluntariado/BuscarVoluntariado?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -198,7 +193,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
         {
             try
             {
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.DeleteAsync($"http://localhost:5278/Voluntariado/EliminarVoluntariado?id={id}");
 
                 if (response.IsSuccessStatusCode)
@@ -218,7 +213,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
 
         private async Task<bool> VoluntariadoExistsAsync(int id)
         {
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Voluntariado/BuscarVoluntariado?id={id}");
 
             return response.IsSuccessStatusCode;

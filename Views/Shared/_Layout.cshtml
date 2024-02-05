@@ -11,7 +11,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+            <div class="container-fluid" style="@(ViewContext.RouteData.Values["controller"]?.ToString().ToLower() == "home" && ViewContext.RouteData.Values["action"]?.ToString().ToLower() == "index" ? "display:none;" : "")">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ConexionAppWeb_Apigateway</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -19,12 +19,6 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
                         </li>
@@ -41,7 +35,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Voluntariadoes" asp-action="Index">Voluntariado</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="EstanteRecompensas" asp-action="Index">Estante_Recompensa</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="EstanteRecompensas" asp-action="Index">Estan</a>
                         </li>
                     </ul>
                 </div>

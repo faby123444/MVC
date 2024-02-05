@@ -6,22 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
 using ConexionAppWeb_Apigateway.Models.DB;
+using ConexionAppWeb_Apigateway.Utilities;
 
 namespace ConexionAppWeb_Apigateway.Controllers
 {
     public class EstanteRecompensasController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public EstanteRecompensasController(IHttpClientFactory httpClientFactory)
-        {
-            _httpClientFactory = httpClientFactory;
-        }
 
         // GET: EstanteRecompensa
         public async Task<IActionResult> Index()
         {
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync("http://localhost:5278/EstanteRecompensa/ListarEstanteRecompensas");
 
             if (response.IsSuccessStatusCode)
@@ -45,7 +40,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/EstanteRecompensa/BuscarEstanteRecompensa?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -80,7 +75,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
             try
             {
                 var queryString = $"?IdRecompensa={IdRecompensa}&IdUsuario={IdUsuario}";
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.PostAsync($"http://localhost:5278/EstanteRecompensa/RegistrarEstanteRecompensa{queryString}", null);
 
                 if (response.IsSuccessStatusCode)
@@ -106,7 +101,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/EstanteRecompensa/BuscarEstanteRecompensa?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -142,7 +137,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 try
                 {
                     var queryString = $"?id={id}&IdRecompensa={IdRecompensa}&IdUsuario={IdUsuario}";
-                    var httpClient = _httpClientFactory.CreateClient();
+                    var httpClient = HttpClientSingleton.Instance;
                     var response = await httpClient.PutAsync($"http://localhost:5278/EstanteRecompensa/EditarEstanteRecompensa{queryString}", null);
 
                     if (response.IsSuccessStatusCode)
@@ -170,7 +165,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/EstanteRecompensa/BuscarEstanteRecompensa?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -198,7 +193,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
         {
             try
             {
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.DeleteAsync($"http://localhost:5278/EstanteRecompensa/EliminarEstanteRecompensa?id={id}");
 
                 if (response.IsSuccessStatusCode)

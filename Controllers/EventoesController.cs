@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ConexionAppWeb_Apigateway.Models.DB;
+using ConexionAppWeb_Apigateway.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -11,17 +12,10 @@ namespace ConexionAppWeb_Apigateway.Controllers
 {
     public class EventoesController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public EventoesController(IHttpClientFactory httpClientFactory)
-        {
-            _httpClientFactory = httpClientFactory;
-        }
-
         // GET: Eventos
         public async Task<IActionResult> Index()
         {
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync("http://localhost:5278/Evento/ListarEventos");
 
             if (response.IsSuccessStatusCode)
@@ -45,7 +39,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Evento/BuscarEvento?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -78,7 +72,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
         {
             try
             {
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.PostAsync($"http://localhost:5278/Evento/RegistrarEvento?" +
                                                            $"Título={Uri.EscapeDataString(evento.Título)}" +
                                                            $"&Fecha={evento.Fecha}" +
@@ -109,7 +103,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Evento/BuscarEvento?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -143,7 +137,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
             {
                 try
                 {
-                    var httpClient = _httpClientFactory.CreateClient();
+                    var httpClient = HttpClientSingleton.Instance;
                     var response = await httpClient.PutAsync($"http://localhost:5278/Evento/EditarEvento?" +
                                                               $"id={id}" +
                                                               $"&Título={Uri.EscapeDataString(evento.Título)}" +
@@ -177,7 +171,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Evento/BuscarEvento?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -205,7 +199,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
         {
             try
             {
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.DeleteAsync($"http://localhost:5278/Evento/EliminarEvento?id={id}");
 
                 if (response.IsSuccessStatusCode)
@@ -225,7 +219,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
 
         private async Task<bool> EventoExists(int id)
         {
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Evento/BuscarEvento?id={id}");
 
             return response.IsSuccessStatusCode;

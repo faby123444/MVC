@@ -8,23 +8,17 @@ using Microsoft.EntityFrameworkCore;
 using ConexionAppWeb_Apigateway.Models.DB;
 using Newtonsoft.Json;
 using System.Text;
+using System.Net.Http;
+using ConexionAppWeb_Apigateway.Utilities;
 
 namespace ConexionAppWeb_Apigateway.Controllers
 {
     public class UsuariosController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public UsuariosController(IHttpClientFactory httpClientFactory)
-        {
-            _httpClientFactory = httpClientFactory;
-        }
-
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-            // Hacer la solicitud a la API Gateway
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync("http://localhost:5278/Usuario/ListarUsuarios");
 
             if (response.IsSuccessStatusCode)
@@ -52,7 +46,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
             }
 
             // Hacer la solicitud a la API Gateway para obtener el usuario por ID
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Usuario/BuscarUsuario?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -104,7 +98,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                                   $"&Direccion={Uri.EscapeDataString(Direccion)}";
 
                 // Hacer la solicitud a la API Gateway para registrar el usuario
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var stri = $"http://localhost:5278/Usuario/RegistrarUsuario{queryString}";
                 var response = await httpClient.PostAsync($"http://localhost:5278/Usuario/RegistrarUsuario{queryString}", null);
 
@@ -137,7 +131,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
             }
 
             // Hacer la solicitud a la API Gateway para obtener el usuario por ID
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Usuario/BuscarUsuario?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -188,7 +182,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                                       $"&Direccion={Uri.EscapeDataString(Direccion)}";
 
                     // Hacer la solicitud a la API Gateway para actualizar el usuario
-                    var httpClient = _httpClientFactory.CreateClient();
+                    var httpClient = HttpClientSingleton.Instance;
                     var stri = $"http://localhost:5278/Usuario/EditarUsuario{queryString}";
                     var response = await httpClient.PutAsync($"http://localhost:5278/Usuario/EditarUsuario{queryString}", null);
 
@@ -224,7 +218,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
             }
 
             // Hacer la solicitud a la API Gateway para obtener los detalles del usuario
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Usuario/BuscarUsuario?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -256,7 +250,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
             try
             {
                 // Hacer la solicitud a la API Gateway para eliminar el usuario
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.DeleteAsync($"http://localhost:5278/Usuario/EliminarUsuario?id={id}");
 
                 if (response.IsSuccessStatusCode)
@@ -281,7 +275,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
         private async Task<bool> UsuarioExistsAsync(int id)
         {
             // Hacer la solicitud a la API Gateway para verificar la existencia del usuario por ID
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/Usuario/BuscarUsuario?id={id}");
 
             return response.IsSuccessStatusCode;

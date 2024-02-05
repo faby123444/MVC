@@ -6,21 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
 using ConexionAppWeb_Apigateway.Models.DB;
+using ConexionAppWeb_Apigateway.Utilities;
 
 namespace ConexionAppWeb_Apigateway.Controllers
 {
     public class OportunidadesVoluntariadoesController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
-        public OportunidadesVoluntariadoesController(IHttpClientFactory httpClientFactory)
-        {
-            _httpClientFactory = httpClientFactory;
-        }
-
+       
         public async Task<IActionResult> Index()
         {
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync("http://localhost:5278/OportunidadesVoluntariado/ListarOportunidadesVoluntariado");
 
             if (response.IsSuccessStatusCode)
@@ -42,7 +37,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/OportunidadesVoluntariado/BuscarOportunidadVoluntariado?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -76,7 +71,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
             {
                 var queryString = $"?IdVoluntariado={IdVoluntariado}&IdUsuario={IdUsuario}";
 
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.PostAsync($"http://localhost:5278/OportunidadesVoluntariado/RegistrarOportunidadVoluntariado{queryString}", null);
 
                 if (response.IsSuccessStatusCode)
@@ -101,7 +96,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/OportunidadesVoluntariado/BuscarOportunidadVoluntariado?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -137,7 +132,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 {
                     var queryString = $"?id={id}&IdVoluntariado={IdVoluntariado}&IdUsuario={IdUsuario}";
 
-                    var httpClient = _httpClientFactory.CreateClient();
+                    var httpClient = HttpClientSingleton.Instance;
                     var response = await httpClient.PutAsync($"http://localhost:5278/OportunidadesVoluntariado/EditarOportunidadVoluntariado{queryString}", null);
 
                     if (response.IsSuccessStatusCode)
@@ -164,7 +159,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
                 return NotFound();
             }
 
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/OportunidadesVoluntariado/BuscarOportunidadVoluntariado?id={id}");
 
             if (response.IsSuccessStatusCode)
@@ -191,7 +186,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
         {
             try
             {
-                var httpClient = _httpClientFactory.CreateClient();
+                var httpClient = HttpClientSingleton.Instance;
                 var response = await httpClient.DeleteAsync($"http://localhost:5278/OportunidadesVoluntariado/EliminarOportunidadVoluntariado?id={id}");
 
                 if (response.IsSuccessStatusCode)
@@ -211,7 +206,7 @@ namespace ConexionAppWeb_Apigateway.Controllers
 
         private async Task<bool> OportunidadExistsAsync(int id)
         {
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = HttpClientSingleton.Instance;
             var response = await httpClient.GetAsync($"http://localhost:5278/OportunidadesVoluntariado/BuscarOportunidadVoluntariado?id={id}");
 
             return response.IsSuccessStatusCode;
